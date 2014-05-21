@@ -1,7 +1,6 @@
-## Put comments here that give an overall description of what your
-## functions do
-
-## Write a short comment describing this function
+# This function is an object that encapsulates the data and the 
+# methods that act on the data.  It returns a list that allows
+# the caller to mutate and access the internal fields.
 
 makeCacheMatrix <- function(x = matrix()) {
 
@@ -21,7 +20,11 @@ makeCacheMatrix <- function(x = matrix()) {
 }
 
 
-## Write a short comment describing this function
+# This function is the main driver of the program.  Use as:
+#
+# > mat = matrix(c(1,2,3,4), nrow=2, ncol=2)
+# > f <- makeCacheMatrix(mat)
+# > cacheSolve(f)
 
 cacheSolve <- function(f, ...) {
 
@@ -31,8 +34,18 @@ cacheSolve <- function(f, ...) {
       return (inv)
    }
 
-   # data <- f$get()
-   inv  <- solve(f$get(), ...)
+   data <- f$get()
+   # Do some sanity checks.
+   if (dim(data)[1] != dim(data)[2])  {
+      message("matrix is not square")
+      return(0)
+   }
+   if (det(data) == 0)  {
+      message("matrix is not invertible")
+      return(0)
+   }
+   # End of checks
+   inv  <- solve(data, ...)
    f$setinv(inv)
    inv
 }
